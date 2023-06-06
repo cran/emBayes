@@ -16,7 +16,7 @@ Rcpp::List EMR(arma::vec& y, arma::mat& X, arma::mat& C, int n, int p, int q, ar
   theta = mean(Pgamma);
   
   arma::vec residule = y-X*beta-C*alpha;
-  sigma2 = accu(residule%residule)/n;
+  sigma2 = accu(residule%residule)/(n+2);
   
   for(int j = 0; j < p; j++){
     double denominator = accu(pow(X.col(j),2))/sigma2;
@@ -27,7 +27,7 @@ Rcpp::List EMR(arma::vec& y, arma::mat& X, arma::mat& C, int n, int p, int q, ar
   //alpha = accu(y-X*beta)/n;
   for(int k = 0; k < q; k++){
     double An = accu(C.col(k)%(residule+C.col(k)*alpha(k)));
-    double Ad = accu(pow(C.col(k),2)); 
+    double Ad = accu(pow(C.col(k),2))+(2*sigma2/1000); 
     alpha(k) = An/Ad;
   }
   
@@ -41,9 +41,10 @@ Rcpp::List EMR(arma::vec& y, arma::mat& X, arma::mat& C, int n, int p, int q, ar
 Rcpp::List EMQR(arma::vec& y, arma::mat& X, arma::mat& C, int n, int p, int q, double quant, arma::vec alpha, arma::vec beta, double sigma, double theta, double s0, double s1, arma::vec Pgamma, arma::vec invS, double ep1, double ep22, arma::vec vn, arma::vec vp){
   
   theta = mean(Pgamma);
-  
+  int a = 1;
+  int b = 1;
   arma::vec residule = y-X*beta-C*alpha;
-  sigma = accu(vn%pow(residule,2)-2*residule*ep1+vp*(pow(ep1,2)+2*ep22))/(3*n*ep22);
+  sigma = (accu(vn%pow(residule,2)-2*residule*ep1+vp*(pow(ep1,2)+2*ep22))+b)/((3*n+2*a+2)*ep22);
   
   for(int j = 0; j < p; j++){
     double d1 = ep22*sigma;
@@ -57,7 +58,7 @@ Rcpp::List EMQR(arma::vec& y, arma::mat& X, arma::mat& C, int n, int p, int q, d
   }
   
   for(int k = 0; k < q; k++){
-    double d2 = accu(vn%pow(C.col(k),2));
+    double d2 = accu(vn%pow(C.col(k),2))+(ep22*sigma/1000);
     double A1 = accu(C.col(k)%(vn%(residule+C.col(k)*alpha(k))));
     double A2 = accu(ep1*C.col(k));    
     double Ak = A1 - A2;

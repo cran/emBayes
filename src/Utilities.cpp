@@ -25,7 +25,7 @@ Rcpp::List logR(arma::vec& y, arma::mat& X, arma::mat& C, arma::vec alpha, arma:
   double p2 = accu(residule%residule)/(2*sigma2);
   double p3 = accu(abs(beta)%invS);
   double p4 = accu(gamma*log(theta)+(1-gamma)*log(1-theta));
-  double logver = -p1-p2-p3+p4;
+  double logver = -p1-p2-p3+p4-accu(pow(alpha,2)/2000)-log(sigma2);
 
   return Rcpp::List::create(Rcpp::Named("logver") = logver,
                             Rcpp::Named("Pgamma") = gamma,
@@ -33,7 +33,8 @@ Rcpp::List logR(arma::vec& y, arma::mat& X, arma::mat& C, arma::vec alpha, arma:
 }
 // [[Rcpp::export()]]
 Rcpp::List logQR(arma::vec& y, arma::mat& X, arma::mat& C, arma::vec alpha, arma::vec beta, double sigma, double theta, double s0, double s1, double ep1, double ep22){
-  
+  int a = 1;
+  int b = 1;
   int n = X.n_rows;
   arma::vec residule = y-X*beta-C*alpha;
   arma::vec dexps0 = exp(-abs(beta/s0))/(2*s0);
@@ -58,7 +59,7 @@ Rcpp::List logQR(arma::vec& y, arma::mat& X, arma::mat& C, arma::vec alpha, arma
   double p2 = accu((1/(2*sigma*ep22))*(vn%pow(residule,2)-2*residule*ep1+vp*pow(ep22,2)/4));
   double p3 = accu(abs(beta)%invS);
   double p4 = accu(gamma*log(theta)+(1-gamma)*log(1-theta));
-  double logver = -p1-p2-p3+p4;
+  double logver = -p1-p2-p3+p4-accu(pow(alpha,2)/2000)+(a+1)*log(sigma)-(b/sigma);
   
   return Rcpp::List::create(Rcpp::Named("logver") = logver,
                             Rcpp::Named("Pgamma") = gamma,
