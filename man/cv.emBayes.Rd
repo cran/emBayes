@@ -14,7 +14,7 @@ cv.emBayes(
   k,
   func,
   error = 0.01,
-  maxiter = 200
+  maxiter = 100
 )
 }
 \arguments{
@@ -62,5 +62,5 @@ Corresponding error matrices \eqn{CL.CV}, \eqn{SL.CV} and \eqn{SIC.CV} can also 
 
 Schwarz Information Criterion has the following form:
 \deqn{SIC=\log\sum_{i=1}^nL(y_i-\hat{y_i})+\frac{\log n}{2n}edf}
-where \eqn{L(\cdot)} is the check loss and \eqn{edf} is the number of close to zero residuals \eqn{(\leq 0.001)}.
+where \eqn{L(\cdot)} is the check loss and \eqn{edf} is the number of close to zero residuals \eqn{(\leq 0.001)}. For non-robust method “ssLASSO”, one should use least squares loss for tuning selection. For robust method “ssQLASSO”, one can either use quantile check loss or SIC for tuning selection. We suggest using SIC, since it has been extensively utilized for tuning selection in high-dimensional quantile regression, as documented in numerous literature sources.
 }

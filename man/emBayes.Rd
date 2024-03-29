@@ -4,7 +4,7 @@
 \alias{emBayes}
 \title{fit a model with given tuning parameters}
 \usage{
-emBayes(y, clin = NULL, X, quant, s0, s1, func, error = 0.01, maxiter = 200)
+emBayes(y, clin = NULL, X, quant, s0, s1, func, error = 0.01, maxiter = 100)
 }
 \arguments{
 \item{y}{a vector of response variable.}

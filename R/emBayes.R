@@ -60,13 +60,13 @@ NULL
 #' 
 #' @export
 
-emBayes <- function(y,clin=NULL,X,quant,s0,s1,func,error=0.01,maxiter=200){
+emBayes <- function(y,clin=NULL,X,quant,s0,s1,func,error=0.01,maxiter=100){
   
   p <- ncol(X)
   n <- nrow(X)
   inter <- rep(1,n)
-  C <- cbind(inter,clin)
-  q <- ncol(C)
+  #C <- cbind(inter,clin)
+  #q <- ncol(C)
   
   #initial
   sigma=5
@@ -78,10 +78,14 @@ emBayes <- function(y,clin=NULL,X,quant,s0,s1,func,error=0.01,maxiter=200){
   
   y0 <- y-X%*%beta
   if(is.null(clin) == 0){
+    C <- cbind(inter,clin)
+    q <- ncol(C)
     regalpha <- lm(y0 ~ clin)
     alpha <- as.numeric(coefficients(regalpha))
   }
   else{
+    C <- as.matrix(inter)
+    q <- 1
     alpha <- mean(y0)
   }
   
