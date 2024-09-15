@@ -8,6 +8,9 @@ cv.emBayes(
   y,
   clin = NULL,
   X,
+  W = NULL,
+  nt = NULL,
+  group = NULL,
   quant,
   t0,
   t1,
@@ -24,6 +27,12 @@ cv.emBayes(
 
 \item{X}{a matrix of genetic factors.}
 
+\item{W}{a matrix of random factors.}
+
+\item{nt}{a vector of number of repeated measurements for each subject. They can be same or different.}
+
+\item{group}{a vector of group sizes. They can be same or different.}
+
 \item{quant}{value of quantile.}
 
 \item{t0}{a user-supplied sequence of the spike scale \eqn{s_{0}}.}
@@ -32,7 +41,7 @@ cv.emBayes(
 
 \item{k}{number of folds for cross-validation.}
 
-\item{func}{methods to perform variable selection. Two choices are available: "ssLASSO" and "ssQLASSO".}
+\item{func}{methods to perform variable selection. Four choices are available. For non longitudinal analysis: "ssLASSO" and "ssQLASSO". For longitudinal varying-coefficient analysis: "ssVCM" and "ssQVCM".}
 
 \item{error}{cutoff value for determining convergence. The algorithm reaches convergence if the difference in the expected log-likelihood of two iterations is less than the value of error. The default value is 0.01.}
 
